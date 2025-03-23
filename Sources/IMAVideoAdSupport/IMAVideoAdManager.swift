@@ -96,7 +96,7 @@ extension IMAVideoAdManager: IMAAdsManagerDelegate {
     public func adsManager(_ adsManager: IMAAdsManager, didReceive event: IMAAdEvent) {
         switch event.type {
         case .LOADED:
-            adsManager.start()
+               adsManager.start()
                 self.delegate?.adDidStart()
         case .CLICKED:
                 self.delegate?.adDidClick()

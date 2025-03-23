@@ -38,19 +38,32 @@ public class IMAVideoPlayerView: UIView {
         playerViewController.view.frame = bounds
     }
 
-
     private func setupVideoPlayer() {
         // Initialize AVPlayerViewController
         playerViewController = AVPlayerViewController()
+        //player.play()
         playerViewController.player = player
         playerViewController.showsPlaybackControls = true  // Automatically shows playback controls like play/pause, scrubber, etc.
 
+
         // Add the AVPlayerViewController's view as a subview to the custom UIView
         addSubview(playerViewController.view)
-        DispatchQueue.main.async {
-            self.adManager = IMAVideoAdManager(player: self.player, delegate: self.delegate)
-            self.adManager?.requestAds(adTagURL: self.adTagURL, videoView: self, viewController: self.rootViewController)
-        }
+
     }
+    
+    /// This is called when the view is added to a window (i.e., it's on screen)
+       public override func didMoveToWindow() {
+           super.didMoveToWindow()
+           if window != nil { // View is in the view hierarchy
+               requestAdsIfNeeded()
+           }
+       }
+
+       private func requestAdsIfNeeded() {
+           if adManager == nil {
+               adManager = IMAVideoAdManager(player: player, delegate: delegate)
+               adManager?.requestAds(adTagURL: adTagURL, videoView: self, viewController: rootViewController)
+           }
+       }
 
 }
